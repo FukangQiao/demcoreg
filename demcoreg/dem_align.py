@@ -165,6 +165,8 @@ def compute_offset(ref_dem_ds, src_dem_ds, src_dem_fn, mode='nuth', remove_outli
         #m, int_offset, sp_offset = coreglib.compute_offset_ncc(ref_dem, src_dem)
     elif mode == "none":
         print("Skipping alignment, writing out DEM with median bias over static surfaces removed")
+        outprefix='none'
+        src_dem_orig='none'
         dst_fn = outprefix+'_med%0.1f.tif' % dz
         iolib.writeGTiff(src_dem_orig + dz, dst_fn, src_dem_ds)
         sys.exit()
