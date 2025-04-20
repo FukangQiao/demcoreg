@@ -53,7 +53,8 @@ def parse_pc_align_log(fn):
         log_fn = glob.glob(fn.rsplit('-DEM', 1)[0]+'*align/*.log')
 
     if not log_fn:
-        print "Failed to locate align log for %s" % fn
+        #print "Failed to locate align log for %s" % fn
+        print ("Failed to locate align log for %s" % fn)
     else:
         log_fn = log_fn[0]
         print(log_fn)
