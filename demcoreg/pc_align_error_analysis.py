@@ -342,7 +342,7 @@ def main():
     #ax.xaxis.set_major_locator(months_int3)
 
     print
-    print "n:", len(error_dict_list) 
+    print ("n:", len(error_dict_list) )
 
     """
     #ECEF translations
@@ -388,17 +388,17 @@ def main():
     ce90 = geolib.CE90(val[:,0], val[:,1])
     le90 = geolib.LE90(val[:,2])
     print
-    print key
-    print "CE90:", ce90 
-    print "LE90:", le90 
+    print (key)
+    print ("CE90:", ce90 )
+    print ("LE90:", le90 )
     print
-    print 'Centroid (mean) of offsets (local ned meters): ', np.mean(val, axis=0) 
-    print 'Centroid (median) of offsets (local ned meters): ', np.median(val, axis=0) 
+    print ('Centroid (mean) of offsets (local ned meters): ', np.mean(val, axis=0) )
+    print ('Centroid (median) of offsets (local ned meters): ', np.median(val, axis=0) )
 
     #Remove vertical bias
     remove_vertbias = False 
     if remove_vertbias:
-        print "Removing vertical bias: %0.2f" % np.mean(val, axis=0)[2]
+        print ("Removing vertical bias: %0.2f" % np.mean(val, axis=0)[2])
         val[:,2] -= np.mean(val, axis=0)[2]
 
     remove_outliers = False 
@@ -412,7 +412,7 @@ def main():
     p = 98.0
     p_thresh = np.percentile(h_mag, p)
     #print "Outliers with horiz error >= %0.2f (%0.1f%%)" % (p_thresh, p)
-    print "Outliers:" 
+    print ("Outliers:") 
     #idx = (h_mag >= p_thresh).nonzero()[0]
     idx = (h_mag >= ce90).nonzero()[0]
     idx = np.unique(np.hstack([idx, ((np.abs(v_mag) >= le90).nonzero()[0])]))
@@ -422,23 +422,23 @@ def main():
     #idx_sort = np.argsort(mag[idx])
     #idx = idx[idx_sort]
 
-    print 'name, m, h, v, x, y, z'
+    print ('name, m, h, v, x, y, z')
     for i in idx:
-        print error_dict_list[i]['File'], mag[i], h_mag[i], v_mag[i], val[i,0:3]
+        print (error_dict_list[i]['File'], mag[i], h_mag[i], v_mag[i], val[i,0:3])
         #Delete from list
         if remove_outliers:
-            print "Removing from calculation"
+            print ("Removing from calculation")
             del error_dict_list[i]
 
     if remove_vertbias or remove_outliers:
         print
-        print "Updated values"
-        print key
-        print "CE90:", geolib.CE90(val[:,0], val[:,1])
-        print "LE90:", geolib.LE90(val[:,2])
+        print ("Updated values")
+        print (key)
+        print ("CE90:", geolib.CE90(val[:,0], val[:,1]))
+        print ("LE90:", geolib.LE90(val[:,2]))
         print
-        print 'Centroid (mean) of offsets (local ned meters): ', np.mean(val, axis=0) 
-        print 'Centroid (median) of offsets (local ned meters): ', np.median(val, axis=0) 
+        print ('Centroid (mean) of offsets (local ned meters): ', np.mean(val, axis=0) )
+        print ('Centroid (median) of offsets (local ned meters): ', np.median(val, axis=0) )
 
     #Extract dates
     date_vec = np.array([e['Date'] for e in error_dict_list])
@@ -574,7 +574,7 @@ def main():
         out_spread_thresh = np.percentile(out_spread, p)
         #print "Outliers with horiz error >= %0.2f (%0.1f%%)" % (p_thresh, p)
         print
-        print "Sampled Error Outliers:" 
+        print ("Sampled Error Outliers:" )
         #idx = (h_mag >= p_thresh).nonzero()[0]
         idx = (out_med >= out_med_thresh).nonzero()[0]
         idx = np.unique(np.hstack([idx, ((out_spread >= out_spread_thresh).nonzero()[0])]))
@@ -582,16 +582,16 @@ def main():
         idx = np.arange(out_med.size)
         idx_sort = np.argsort(out_med[idx])
         idx = idx[idx_sort]
-        print 'name, samp_mederrr, samp_errspread, nerr'
+        print ('name, samp_mederrr, samp_errspread, nerr')
         for i in idx:
-            print error_dict_list[i]['File'], out_med[i], out_spread[i], nerr[i]
+            print (error_dict_list[i]['File'], out_med[i], out_spread[i], nerr[i])
             #Delete from list
             if remove_outliers:
-                print "Removing from calculation"
+                print ("Removing from calculation")
                 del error_dict_list[i]
         print
-        print 'Input sampled median error (spread/2): %0.2f (%0.2f)' % (np.median(in_med), np.median(in_spread)/2.)
-        print 'Output sampled median error (spread/2): %0.2f (%0.2f)' % (np.median(out_med), np.median(out_spread)/2.)
+        print ('Input sampled median error (spread/2): %0.2f (%0.2f)' % (np.median(in_med), np.median(in_spread)/2.))
+        print ('Output sampled median error (spread/2): %0.2f (%0.2f)' % (np.median(out_med), np.median(out_spread)/2.))
         print
 
         make_plot(x,out_med,c='b',label=key,yerr=[out_med - out_16p, out_84p - out_med], abs=True)
